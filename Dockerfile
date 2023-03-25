@@ -3,6 +3,8 @@ FROM openjdk:18-jdk
 # Set the working directory to /app
 WORKDIR /app
 
+COPY . /app
+
 # Expose port 8080
 EXPOSE 8080
 
