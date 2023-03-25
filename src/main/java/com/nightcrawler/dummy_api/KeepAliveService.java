@@ -5,10 +5,14 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 
 public class KeepAliveService {
     private final Timer timer;
     private long count = 0;
+    private Logger logger = LoggerFactory.getLogger(KeepAliveService.class);
 
     public KeepAliveService(String url, long period) {
         timer = new Timer();
@@ -22,12 +26,15 @@ public class KeepAliveService {
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
 
-                    if (connection.getResponseCode() == 200) count++;
-                    System.out.println(String.format("GET \"%s\" - %d", url, connection.getResponseCode()));
+                    int code = connection.getResponseCode();
+
+                    if (code == 200) count++;
                     connection.disconnect();
 
+                    logger.info("GET \"{}\" (code: {})", url, code);
+
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("An error occurred", e);
                 }
             }
 
