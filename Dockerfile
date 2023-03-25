@@ -1,5 +1,4 @@
-FROM adoptopenjdk/openjdk18:latest
-RUN apt-get update && apt-get install -y maven
+FROM maven:3.6.3-jdk-11-slim
 
 # Set the working directory to /app
 WORKDIR /app
